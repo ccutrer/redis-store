@@ -10,14 +10,14 @@ task :default => "spec:suite"
 begin
   require "jeweler"
   Jeweler::Tasks.new do |gemspec|
-    gemspec.name        = "#{ENV["GEM_PREFIX"]}redis-store"
+    gemspec.name        = "instructure-redis-store"
     gemspec.summary     = "Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks."
     gemspec.description = "Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks."
-    gemspec.email       = "guidi.luca@gmail.com"
-    gemspec.homepage    = "http://github.com/jodosha/redis-store"
-    gemspec.authors     = [ "Luca Guidi" ]
+    gemspec.email       = "brianp@instructure.com"
+    gemspec.homepage    = "http://github.com/instructure/redis-store"
+    gemspec.authors     = [ "Luca Guidi", "Brian Palmer" ]
     gemspec.executables = [ ]
-    gemspec.add_dependency "redis", ">= 2.0.0"
+    gemspec.add_dependency "redis", "3.0.1"
   end
 
   Jeweler::GemcutterTasks.new
