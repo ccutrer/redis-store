@@ -27,6 +27,8 @@ class Redis
 
         def _unmarshal(val, options)
           unmarshal?(val, options) ? Marshal.load(val) : val
+        rescue TypeError
+          return nil
         end
 
         def marshal?(options)
