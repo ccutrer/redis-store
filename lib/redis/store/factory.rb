@@ -62,25 +62,26 @@ class Redis
       end
 
       def self.host_options?(options)
-        if options.keys.any? {|n| [:host, :db, :port].include?(n) }
-          options
-        else
-          nil # just to be clear
-        end
+        options.keys.any? {|n| [:host, :db, :port, :path].include?(n) }
       end
 
       def self.extract_host_options_from_uri(uri)
         uri = URI.parse(uri)
-        _, db, namespace = if uri.path
-                             uri.path.split(/\//)
+        if uri.scheme == "unix"
+          options = { :path => uri.path }
+          db_and_namespace = "/#{uri.query}" if uri.query
+        else
+          db_and_namespace = uri.path
+
+          options = {
+            :host     => uri.hostname,
+            :port     => uri.port || DEFAULT_PORT,
+            :password => uri.password.nil? ? nil : CGI::unescape(uri.password.to_s)
+          }
+        end
+        _, db, namespace = if db_and_namespace
+                             db_and_namespace.split(/\//)
                            end
-
-        options = {
-          :host     => uri.hostname,
-          :port     => uri.port || DEFAULT_PORT, 
-          :password => uri.password.nil? ? nil : CGI::unescape(uri.password.to_s)
-        }
-
         options[:db]        = db.to_i   if db
         options[:namespace] = namespace if namespace
 
